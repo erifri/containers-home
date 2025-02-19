@@ -1,0 +1,44 @@
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:13.19-alpine3.21
+    restart: unless-stopped
+    volumes:
+      - pginit:/docker-entrypoint-initdb.d
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-guacadb}
+      POSTGRES_PASSWORD:
+      POSTGRES_INITDB_ARGS: --auth-host=md5
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  guacd:
+    container_name: guacd
+    image: guacamole/guacd:1.5.5
+    restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  guacamole:
+    container_name: guacamole
+    image: guacamole/guacamole:1.5.5
+    restart: unless-stopped
+    ports:
+      - 8084:8080/tcp # guacamole is on :8080/guacamole, not /.
+    environment:
+      GUACD_HOSTNAME: guacd
+      POSTGRES_HOSTNAME: postgres
+      POSTGRES_DATABASE: ${POSTGRES_USER:-guacadb}
+      POSTGRES_USER: ${POSTGRES_USER:-guacadb}
+      POSTGRES_PASSWORD:
+    depends_on:
+      - postgres
+      - guacd
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+
+volumes:
+  pginit:
+  pgdata:
