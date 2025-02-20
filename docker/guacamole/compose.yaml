@@ -13,20 +13,6 @@ services:
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
 
-  postgres-13:
-    container_name: postgres
-    image: postgres:13-alpine
-    restart: unless-stopped
-    volumes:
-      - pginit:/docker-entrypoint-initdb.d
-      - pgdata:/var/lib/postgresql/data
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER:-guacadb}
-      POSTGRES_PASSWORD:
-      POSTGRES_INITDB_ARGS: --auth-host=md5
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
-
   guacd:
     container_name: guacd
     image: guacamole/guacd:1.5.5
@@ -47,14 +33,12 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-guacadb}
       POSTGRES_PASSWORD:
     depends_on:
-      - postgres-13
+      - postgres-17
       - guacd
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
 
 
 volumes:
-  pginit:
-  pgdata:
   pginit17:
   pgdata17:
