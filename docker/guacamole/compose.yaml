@@ -47,7 +47,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-guacadb}
       POSTGRES_PASSWORD:
     depends_on:
-      - postgres
+      - postgres-13
       - guacd
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
