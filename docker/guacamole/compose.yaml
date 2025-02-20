@@ -4,8 +4,8 @@ services:
     image: postgres:17-alpine
     restart: unless-stopped
     volumes:
-      - pginit:/docker-entrypoint-initdb.d
-      - pgdata:/var/lib/postgresql/data
+      - pginit17:/docker-entrypoint-initdb.d
+      - pgdata17:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-guacadb}
       POSTGRES_PASSWORD:
@@ -56,3 +56,5 @@ services:
 volumes:
   pginit:
   pgdata:
+  pginit17:
+  pgdata17:
