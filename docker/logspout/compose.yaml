@@ -11,3 +11,5 @@ services:
       - "com.centurylinklabs.watchtower.enable=true"
 
 
+volumes:
+  logs:
