@@ -1,0 +1,126 @@
+---
+services:
+  prometheus_server:
+    container_name: prometheus
+    image: prom/prometheus:latest
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=180d'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    volumes:
+      - type: volume
+        source: prometheus_data
+        target: /prometheus
+      - /opt/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - 9090:9090
+    links:
+      - vmware_exporter
+    extra_hosts:    
+      - "snmp_exporter:10.0.1.22"
+      - "snmp_exporter.efhost.se:10.0.1.22"
+    labels:      
+      - "com.centurylinklabs.watchtower.enable=true"
+  
+  grafana_server:
+    container_name: grafana
+    image: grafana/grafana:latest
+    volumes:
+      - type: volume
+        source: grafana_configuration
+        target: /etc/grafana
+      - type: volume
+        source: grafana_data
+        target: /var/lib/grafana
+    ports:
+      - 3000:3000
+    #privileged: true
+    privileged: false
+    links:
+      - prometheus_server
+    labels:      
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  vmware_exporter:
+    container_name: vmware_exporter
+    image: pryorda/vmware_exporter:latest
+    #command: -l WARNING
+    command: -l WARN
+    volumes:
+      - /etc/nsswitch.conf:/etc/nsswitch.conf
+    ports:
+      - 9272:9272
+    environment:
+      VSPHERE_HOST: esxi4.mgmt.efhost.se
+      VSPHERE_IGNORE_SSL: "true"
+      VSPHERE_USER: monitor
+      VSPHERE_PASSWORD:
+      VSPHERE_COLLECT_SNAPSHOTS: "false"
+      LOGLEVEL: ERROR
+    extra_hosts:    
+      - "esxi4.mgmt.efhost.se:10.0.0.24"
+    labels:      
+      - "com.centurylinklabs.watchtower.enable=true"
+   
+  redfish_exporter:
+    container_name: redfish_exporter
+    image: erifri/redfish-exporter:2025-02-19
+    volumes:
+      - /etc/nsswitch.conf:/etc/nsswitch.conf
+      - /opt/prometheus/redfish_exporter.yml:/etc/prometheus/redfish_exporter.yml
+    ports:
+      - 9610:9610
+    labels:      
+      - "com.centurylinklabs.watchtower.enable=true"
+      
+  nut_exporter:
+    container_name: nut_exporter
+    image: hon95/prometheus-nut-exporter:1
+    volumes:
+      - /etc/nsswitch.conf:/etc/nsswitch.conf
+    environment:
+      - TZ=Europe/Oslo
+      - HTTP_PATH=/metrics
+      # Defaults
+      #- RUST_LOG=debug
+      #- HTTP_PORT=9995
+      - HTTP_PATH=/nut
+      - LOG_REQUESTS_CONSOLE=true
+      #- PRINT_METRICS_AND_EXIT=false
+    ports:
+      - "9995:9995/tcp"
+    labels:      
+      - "com.centurylinklabs.watchtower.enable=true"
+      
+  snmp_exporter:
+    container_name: snmp_exporter
+    image: prom/snmp-exporter:latest
+    volumes:
+      - /etc/nsswitch.conf:/etc/nsswitch.conf
+      - /opt/prometheus/snmp_exporter/:/etc/prometheus/snmp_exporter
+    ports:
+      - 9116:9116
+      - 116:116/udp
+    restart: always
+    command: --config.file=/etc/prometheus/snmp_exporter/snmp.yml
+    labels:      
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  hue_exporter: 
+    container_name: hue_exporter
+    image: mitchellrj/hue_exporter:latest
+    restart: always
+    volumes:
+      - /opt/prometheus/hue_exporter/config.yml:/etc/hue_exporter/config.yml
+    ports:
+      - "9366:9366"
+    labels:      
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  
+volumes:
+  prometheus_data:
+  grafana_configuration:
+  grafana_data:
