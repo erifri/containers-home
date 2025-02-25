@@ -8,6 +8,9 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /etc/timezone:/etc/timezone:ro
       - /root/.docker/config.json:/config.json
+      - /etc/nsswitch.conf:/etc/nsswitch.conf
+    extra_hosts:
+      - "index.docker.io:98.85.153.80"
     environment:
       WATCHTOWER_CLEANUP: true
       WATCHTOWER_LABEL_ENABLE: true
