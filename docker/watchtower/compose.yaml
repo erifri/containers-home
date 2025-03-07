@@ -9,8 +9,8 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - /root/.docker/config.json:/config.json
       - /etc/nsswitch.conf:/etc/nsswitch.conf
-    env_file:
-      - stack.env
+    #env_file:
+    #  - stack.env
     environment:
       TZ: Europe/Stockholm
       WATCHTOWER_CLEANUP: "true"
