@@ -27,7 +27,6 @@ services:
     volumes:
       - /etc/nsswitch.conf:/etc/nsswitch.conf
       - /opt/docker/sonarr:/config
-      - /mnt/media/tv:/tv 
       - /mnt/media/tv:/srv/tv 
       - /mnt/transmission:/mnt/transmission
       - /mnt/transmission:/srv/transmission
@@ -48,7 +47,6 @@ services:
     volumes:
       - /etc/nsswitch.conf:/etc/nsswitch.conf
       - /opt/docker/radarr:/config
-      - /mnt/media/movies:/movies
       - /mnt/media/movies:/srv/movies 
       - /mnt/transmission:/mnt/transmission
       - /mnt/transmission:/srv/transmission
@@ -86,31 +84,31 @@ services:
     volumes:
       - /etc/nsswitch.conf:/etc/nsswitch.conf
       - /opt/docker/bazarr:/config
-      - /mnt/media/movies:/srv/movies #optional
       - /mnt/media/tv:/srv/tv #optional
+      - /mnt/media/movies:/srv/movies #optional
     ports:
       - 6767:6767
     restart: unless-stopped
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
 
-  #flexget:
-  #  image: lscr.io/linuxserver/flexget:latest
-  #  container_name: flexget
-  #  environment:
-  #    - PUID=1000
-  #    - PGID=500
-  #    - TZ=Europe/Stockholm
-  #    - FG_LOG_LEVEL=info
-  #    - FG_LOG_FILE=/config/flexget.log
-  #    - FG_CONFIG_FILE=/config/.flexget/config.yml
-  #    - FG_WEBUI_PASSWORD=info #optional
-  #  volumes:
-  #    - /etc/nsswitch.conf:/etc/nsswitch.conf
-  #    - /path/to/flexget/data:/config
-  #    - /path/to/downloads:/data #optional
-  #  ports:
-  #    - 5050:5050
-  #  restart: unless-stoppe    
-  # labels:
-  #   - "com.centurylinklabs.watchtower.enable=true"
+  flexget:
+    image: lscr.io/linuxserver/flexget:latest
+    container_name: flexget
+    environment:
+      - PUID=1000
+      - PGID=500
+      - TZ=Europe/Stockholm
+      - FG_LOG_LEVEL=info
+      - FG_LOG_FILE=/config/flexget.log
+      - FG_CONFIG_FILE=/config/.flexget/config.yml
+      - FG_WEBUI_PASSWORD=info #optional
+    volumes:
+      - /etc/nsswitch.conf:/etc/nsswitch.conf
+      - /opt/docker/flexget:/config
+      #- /opt/docker/downloads:/data #optional
+    ports:
+      - 5050:5050
+    restart: unless-stoppe    
+   labels:
+     - "com.centurylinklabs.watchtower.enable=true"
