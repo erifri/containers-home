@@ -102,7 +102,7 @@ services:
       - FG_LOG_LEVEL=info
       - FG_LOG_FILE=/config/flexget.log
       - FG_CONFIG_FILE=/config/.flexget/config.yml
-      - FG_WEBUI_PASSWORD=info #optional
+      - FG_WEBUI_PASSWORD=
     volumes:
       - /etc/nsswitch.conf:/etc/nsswitch.conf
       - /opt/docker/flexget:/config
