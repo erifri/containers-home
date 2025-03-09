@@ -109,6 +109,6 @@ services:
       #- /opt/docker/downloads:/data #optional
     ports:
       - 5050:5050
-    restart: unless-stoppe    
+    restart: unless-stopped
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
