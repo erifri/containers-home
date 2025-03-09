@@ -1,0 +1,116 @@
+---
+services:
+
+  overseerr:
+    image: sctx/overseerr:latest
+    container_name: overseerr
+    environment:
+      - LOG_LEVEL=debug
+      - TZ=Europe/Stockholm
+      - PORT=5055 #optional
+    ports:
+      - 5055:5055
+    volumes:
+      - /etc/nsswitch.conf:/etc/nsswitch.conf
+      - /opt/docker/overseerr/:/app/config
+    restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID=1000
+      - PGID=500
+      - TZ=Europe/Stockholm
+    volumes:
+      - /etc/nsswitch.conf:/etc/nsswitch.conf
+      - /opt/docker/sonarr:/config
+      - /mnt/media/tv:/tv 
+      - /mnt/media/tv:/srv/tv 
+      - /mnt/transmission:/mnt/transmission
+      - /mnt/transmission:/srv/transmission
+      #- /mnt/transmission/downloads/sonarr:/srv/transmission/downloads/sonarr
+    ports:
+      - 8989:8989
+    restart: unless-stopped    
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=1000
+      - PGID=500
+      - TZ=Europe/Stockholm
+    volumes:
+      - /etc/nsswitch.conf:/etc/nsswitch.conf
+      - /opt/docker/radarr:/config
+      - /mnt/media/movies:/movies
+      - /mnt/media/movies:/srv/movies 
+      - /mnt/transmission:/mnt/transmission
+      - /mnt/transmission:/srv/transmission
+      #- /mnt/transmission/downloads/radarr:/srv/transmission/downloads/radarr
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    hostname: prowlarr
+    environment:
+      - PUID=1000
+      - PGID=500
+      - TZ=Europe/Stockholm
+    ports:
+      - 9696:9696 #prowlarr
+    volumes:
+      - /etc/nsswitch.conf:/etc/nsswitch.conf
+      - /opt/docker/prowlarr:/config
+    restart: "always" # no | always | on-failure | unless--stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+    environment:
+      - PUID=1000
+      - PGID=500
+      - TZ=Europe/Stockholm
+    volumes:
+      - /etc/nsswitch.conf:/etc/nsswitch.conf
+      - /opt/docker/bazarr:/config
+      - /mnt/media/movies:/srv/movies #optional
+      - /mnt/media/tv:/srv/tv #optional
+    ports:
+      - 6767:6767
+    restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  #flexget:
+  #  image: lscr.io/linuxserver/flexget:latest
+  #  container_name: flexget
+  #  environment:
+  #    - PUID=1000
+  #    - PGID=500
+  #    - TZ=Europe/Stockholm
+  #    - FG_LOG_LEVEL=info
+  #    - FG_LOG_FILE=/config/flexget.log
+  #    - FG_CONFIG_FILE=/config/.flexget/config.yml
+  #    - FG_WEBUI_PASSWORD=info #optional
+  #  volumes:
+  #    - /etc/nsswitch.conf:/etc/nsswitch.conf
+  #    - /path/to/flexget/data:/config
+  #    - /path/to/downloads:/data #optional
+  #  ports:
+  #    - 5050:5050
+  #  restart: unless-stoppe    
+  # labels:
+  #   - "com.centurylinklabs.watchtower.enable=true"
