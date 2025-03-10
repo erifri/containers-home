@@ -100,12 +100,13 @@ services:
       - PGID=500
       - TZ=Europe/Stockholm
       - FG_LOG_LEVEL=info
-      - FG_LOG_FILE=/config/flexget.log
+      - FG_LOG_FILE=/config/.flexget/flexget.log
       - FG_CONFIG_FILE=/config/.flexget/config.yml
       - FG_WEBUI_PASSWORD=
     volumes:
       - /etc/nsswitch.conf:/etc/nsswitch.conf
       - /opt/docker/flexget:/config
+      - /opt/certificates:/srv/certificates:ro
       #- /opt/docker/downloads:/data #optional
     ports:
       - 5050:5050
