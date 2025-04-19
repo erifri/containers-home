@@ -17,6 +17,20 @@ services:
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
 
+  jellyseerr:
+    image: ghcr.io/fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    environment:
+      - LOG_LEVEL=info
+      - TZ=Europe/Stockholm
+      - PORT=5055 #optional
+    ports:
+      - 5056:5055
+    volumes:
+      - /etc/nsswitch.conf:/etc/nsswitch.conf
+      - /opt/docker/jellyseerr/:/app/config
+    restart: unless-stopped
+
   sonarr:
     image: lscr.io/linuxserver/sonarr:latest
     container_name: sonarr
