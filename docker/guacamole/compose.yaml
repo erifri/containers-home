@@ -32,6 +32,10 @@ services:
       POSTGRES_DATABASE: ${POSTGRES_USER:-guacadb}
       POSTGRES_USER: ${POSTGRES_USER:-guacadb}
       POSTGRES_PASSWORD:
+      POSTGRESQL_HOSTNAME: postgres-17
+      POSTGRESQL_DATABASE: ${POSTGRESQL_USER:-guacadb}
+      POSTGRESQL_USER: ${POSTGRESQL_USER:-guacadb}
+      POSTGRESQL_PASSWORD:      
     depends_on:
       - postgres-17
       - guacd
