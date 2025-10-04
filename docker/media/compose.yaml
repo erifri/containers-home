@@ -30,6 +30,8 @@ services:
       - /etc/nsswitch.conf:/etc/nsswitch.conf
       - /opt/docker/jellyseerr/:/app/config
     restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
 
   sonarr:
     image: lscr.io/linuxserver/sonarr:latest
