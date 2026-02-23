@@ -31,21 +31,21 @@ services:
     restart: unless-stopped
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
-  seerr_plex:
-    image: ghcr.io/seerr-team/seerr:latest
-    container_name: seerr_plex
-    environment:
-      - LOG_LEVEL=info
-      - TZ=Europe/Stockholm
-      - PORT=45055 #optional
-    ports:
-      - 45055:45055
-    volumes:
-      - /etc/nsswitch.conf:/etc/nsswitch.conf
-      - /opt/docker/seerr_plex/:/app/config
-    restart: unless-stopped
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
+  #seerr_plex:
+  #  image: ghcr.io/seerr-team/seerr:latest
+  #  container_name: seerr_plex
+  #  environment:
+  #    - LOG_LEVEL=info
+  #    - TZ=Europe/Stockholm
+  #    - PORT=45055 #optional
+  #  ports:
+  #    - 45055:45055
+  #  volumes:
+  #    - /etc/nsswitch.conf:/etc/nsswitch.conf
+  #    - /opt/docker/seerr_plex/:/app/config
+  #  restart: unless-stopped
+  #  labels:
+  #    - "com.centurylinklabs.watchtower.enable=true"
       
   jellyseerr:
     image: ghcr.io/fallenbagel/jellyseerr:latest
