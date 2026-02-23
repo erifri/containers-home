@@ -2,8 +2,8 @@
 services:
 
   overseerr:
-    image: ghcr.io/seerr-team/seerr:latest
-    container_name: seerr
+    image: sctx/overseerr:latest
+    container_name: overseerr
     environment:
       - LOG_LEVEL=info
       - TZ=Europe/Stockholm
@@ -16,7 +16,22 @@ services:
     restart: unless-stopped
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
-
+  seerr:
+    image: ghcr.io/seerr-team/seerr:latest
+    container_name: seerr
+    environment:
+      - LOG_LEVEL=info
+      - TZ=Europe/Stockholm
+      - PORT=55055 #optional
+    ports:
+      - 55055:55055
+    volumes:
+      - /etc/nsswitch.conf:/etc/nsswitch.conf
+      - /opt/docker/seerr/:/app/config
+    restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+      
   jellyseerr:
     image: ghcr.io/fallenbagel/jellyseerr:latest
     container_name: jellyseerr
