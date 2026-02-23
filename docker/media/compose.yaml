@@ -3,7 +3,7 @@ services:
 
   overseerr:
     image: ghcr.io/seerr-team/seerr:latest
-    container_name: overseerr
+    container_name: seerr
     environment:
       - LOG_LEVEL=info
       - TZ=Europe/Stockholm
