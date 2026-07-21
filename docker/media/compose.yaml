@@ -37,9 +37,9 @@ services:
     environment:
       - LOG_LEVEL=info
       - TZ=Europe/Stockholm
-      - PORT=45055 #optional
+      - PORT=5055 #optional
     ports:
-      - 45055:45055
+      - 45055:5055
     volumes:
       - /etc/nsswitch.conf:/etc/nsswitch.conf
       - /opt/docker/seerr_plex/:/app/config
