@@ -1,9 +1,24 @@
 ---
 services:
 
-  overseerr:
-    image: sctx/overseerr:latest
-    container_name: overseerr
+  #overseerr:
+  #  image: sctx/overseerr:latest
+  #  container_name: overseerr
+  #  environment:
+  #    - LOG_LEVEL=info
+  #    - TZ=Europe/Stockholm
+  #    - PORT=5055 #optional
+  #  ports:
+  #    - 5055:5055
+  #  volumes:
+  #    - /etc/nsswitch.conf:/etc/nsswitch.conf
+  #    - /opt/docker/overseerr/:/app/config
+  #  restart: unless-stopped
+  #  labels:
+  #    - "com.centurylinklabs.watchtower.enable=true"
+  seerr:
+    image: ghcr.io/seerr-team/seerr:latest
+    container_name: seerr
     environment:
       - LOG_LEVEL=info
       - TZ=Europe/Stockholm
@@ -12,56 +27,41 @@ services:
       - 5055:5055
     volumes:
       - /etc/nsswitch.conf:/etc/nsswitch.conf
-      - /opt/docker/overseerr/:/app/config
-    restart: unless-stopped
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
-  seerr:
-    image: ghcr.io/seerr-team/seerr:latest
-    container_name: seerr
-    environment:
-      - LOG_LEVEL=info
-      - TZ=Europe/Stockholm
-      - PORT=55055 #optional
-    ports:
-      - 55055:55055
-    volumes:
-      - /etc/nsswitch.conf:/etc/nsswitch.conf
       - /opt/docker/seerr/:/app/config
     restart: unless-stopped
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
-  #seerr_plex:
-  #  image: ghcr.io/seerr-team/seerr:latest
-  #  container_name: seerr_plex
-  #  environment:
-  #    - LOG_LEVEL=info
-  #    - TZ=Europe/Stockholm
-  #    - PORT=45055 #optional
-  #  ports:
-  #    - 45055:45055
-  #  volumes:
-  #    - /etc/nsswitch.conf:/etc/nsswitch.conf
-  #    - /opt/docker/seerr_plex/:/app/config
-  #  restart: unless-stopped
-  #  labels:
-  #    - "com.centurylinklabs.watchtower.enable=true"
-      
-  jellyseerr:
-    image: ghcr.io/fallenbagel/jellyseerr:latest
-    container_name: jellyseerr
+  seerr_plex:
+    image: ghcr.io/seerr-team/seerr:latest
+    container_name: seerr_plex
     environment:
       - LOG_LEVEL=info
       - TZ=Europe/Stockholm
-      - PORT=5055 #optional
+      - PORT=45055 #optional
     ports:
-      - 5056:5055
+      - 45055:45055
     volumes:
       - /etc/nsswitch.conf:/etc/nsswitch.conf
-      - /opt/docker/jellyseerr/:/app/config
+      - /opt/docker/seerr_plex/:/app/config
     restart: unless-stopped
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
+      
+  #jellyseerr:
+  #  image: ghcr.io/fallenbagel/jellyseerr:latest
+  #  container_name: jellyseerr
+  #  environment:
+  #    - LOG_LEVEL=info
+  #    - TZ=Europe/Stockholm
+  #    - PORT=5055 #optional
+  #  ports:
+  #    - 5056:5055
+  #  volumes:
+  #    - /etc/nsswitch.conf:/etc/nsswitch.conf
+  #    - /opt/docker/jellyseerr/:/app/config
+  #  restart: unless-stopped
+  #  labels:
+  #    - "com.centurylinklabs.watchtower.enable=true"
 
   sonarr:
     image: lscr.io/linuxserver/sonarr:latest
