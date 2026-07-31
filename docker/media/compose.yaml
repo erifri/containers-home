@@ -58,23 +58,6 @@ services:
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
 
-  prowlarr:
-    image: lscr.io/linuxserver/prowlarr:latest
-    container_name: prowlarr
-    hostname: prowlarr
-    environment:
-      - PUID=1000
-      - PGID=500
-      - TZ=Europe/Stockholm
-    ports:
-      - 9696:9696 #prowlarr
-    volumes:
-      - /etc/nsswitch.conf:/etc/nsswitch.conf
-      - /opt/docker/prowlarr:/config
-    restart: "always" # no | always | on-failure | unless--stopped
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
-
   byparr:
     image: ghcr.io/thephaseless/byparr:latest
     container_name: byparr
