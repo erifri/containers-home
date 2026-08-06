@@ -66,6 +66,7 @@ services:
     ports:
       - "8191:8191"
     restart: unless-stopped
+    init: true
     volumes:
       - /etc/nsswitch.conf:/etc/nsswitch.conf
     labels:
